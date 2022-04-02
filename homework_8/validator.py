@@ -8,6 +8,8 @@ class Data:
         self.name = name
         self.age = age
 
+        self._clear_whitespaces()
+
     def _clear_whitespaces(self) -> None:
         """Функция, очищающая данные от пробелов в начале и в конце"""
         self.name = self.name.strip()
@@ -29,9 +31,12 @@ class Validator:
     def validate(self, data: Data):
         """Функция валидации данных"""
         self.data_history.append(data)
-        if self.data_history is None:
-            raise ValueError
 
+        if self.data_history is None:
+            raise ValidationError("Вы не ввели данные")
+
+        if self.data_history[-1].name.isalpha():
+            raise ValidationError("Возраст должен быть числом")
         self._validate_name()
         self._validate_age()
 

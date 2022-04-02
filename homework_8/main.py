@@ -61,13 +61,7 @@ def main():
             start_time = data.current_time
 
         finish_time = data.current_time
-        # Проверяем, ввел ли пользователь число в качестве имени
-        try:
-            data.age = int(data.age)
-        except ValueError as e:
-            print(f"Я поймал ошибку: {e}")
-            counter += 1
-            continue
+
 
         # Проверяем имя и возраст на подходящие условия
         try:
@@ -81,7 +75,7 @@ def main():
         text = f"Привет, {data.name.title()}! Тебе {data.age} лет."
 
         # Даём совет по получению или замене паспорта
-        advice = get_passport_advice(data.age)
+        advice = get_passport_advice(int(data.age))
         if advice:
             text += advice
 
@@ -93,3 +87,6 @@ def main():
           f"\nПродолжительность сеанса: {finish_time - start_time}\n")
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
+
+    print("Еблан?")
+
