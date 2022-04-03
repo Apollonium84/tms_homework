@@ -35,8 +35,8 @@ class Validator:
         if self.data_history is None:
             raise ValidationError("Вы не ввели данные")
 
-        if self.data_history[-1].name.isalpha():
-            raise ValidationError("Возраст должен быть числом")
+        # if self.data_history[-1].name.isalpha():
+        #     raise ValidationError("Возраст должен быть числом")
         self._validate_name()
         self._validate_age()
 

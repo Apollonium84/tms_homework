@@ -82,11 +82,11 @@ def main():
         print(text)
         break
     print(f"Вам понадобилось {counter + 1} попыток "
-          f"\nВремя начала: {start_time.hour}:{start_time.minute}:{start_time.second}"
-          f"\nВремя окончания: {finish_time.hour}:{finish_time.minute}:{finish_time.second}"
-          f"\nПродолжительность сеанса: {finish_time - start_time}\n")
+          f"\nВремя начала: {start_time[11: 19]}"
+          f"\nВремя окончания: {finish_time[11: 19]}"
+        )
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
 
 
-
+main()
