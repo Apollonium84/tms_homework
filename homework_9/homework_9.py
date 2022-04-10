@@ -23,16 +23,20 @@ def guess_number_game(guess_start: int, guess_stop: int) -> None:
 
 
 def main():
-    """ Запрашиваем пользователя имя и возраст и проверяем их на нужные нам условия.
-        Если условия выполнены - выводим приветствие с советом о получении паспорта,
-        иначе выводим текст с ошибкой.
+    """ Проверяем существование логина у пользователя:
+     если есть - авторизовываем,
+     иначе регисртируем
     """
     user = Authenticator()
+    if user.login is None:
+        print("Вы проходите регистрацию")
+    else:
+        print("Вы авторизовываетесь")
 
     while True:
 
-        login = input("Введите ваше имя: ")
-        password = input("Введите ваш возраст: ")
+        login = input("Введите логин: ")
+        password = input("Введите пароль: ")
 
         if user.login is None:
             try:
@@ -40,6 +44,7 @@ def main():
             except RegistrationError as e:
                 print(f"{e}")
                 continue
+            print("Вы зарегистрировались")
 
         try:
             user.authorize(login, password)
@@ -51,3 +56,6 @@ def main():
 
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
+
+
+main()
