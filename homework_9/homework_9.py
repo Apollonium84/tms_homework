@@ -22,40 +22,57 @@ def guess_number_game(guess_start: int, guess_stop: int) -> None:
     return None
 
 
-def main():
+def while_true(func):
+    def wrapper():
+        while True:
+            result = func()
+            if result is True:
+                break
+
+    return wrapper
+
+
+@while_true
+def main() -> bool:
     """ Проверяем существование логина у пользователя:
      если есть - авторизовываем,
      иначе регисртируем
     """
-    user = Authenticator()
-    if user.login is None:
-        print("Вы проходите регистрацию")
-    else:
-        print("Вы авторизовываетесь")
+    authenticator = Authenticator()
 
-    while True:
+    if authenticator.login is None:
+        print("Вы проходите регистрацию")
 
         login = input("Введите логин: ")
         password = input("Введите пароль: ")
 
-        if user.login is None:
-            try:
-                user.registrate(login, password)
-            except RegistrationError as e:
-                print(f"{e}")
-                continue
-            print("Вы зарегистрировались")
+        try:
+            authenticator.registrate(login, password)
+        except RegistrationError as e:
+            print(f"{e}")
+            return False
+
+        print("Вы зарегистрировались")
+        return False
+
+    else:
+        print("Вы авторизовываетесь")
+
+        login = input("Введите логин: ")
+        password = input("Введите пароль: ")
 
         try:
-            user.authorize(login, password)
+            authenticator.authorize(login, password)
         except AuthorisationError as e:
             print(f"{e}")
-            continue
+            return False
 
-        break
+        print("Вы авторизовались")
 
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
+
+    return True
 
 
 main()

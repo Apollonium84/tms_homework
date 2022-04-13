@@ -18,13 +18,14 @@ class Authenticator:
 
         self.login: str | None = None
         self.password: str | None = None
-        self.last_success_login_at: str | None = ""
+        self.last_success_login_at: datetime | None = None
         self.errors_count: int = 0
 
         if self._is_auth_file_exists():
             self._read_auth_file()
 
-    def _is_auth_file_exists(self) -> bool:
+    @staticmethod
+    def _is_auth_file_exists() -> bool:
         """Проверка существования файла в директории"""
         file_exists = exists("auth.txt")
         return file_exists
@@ -35,7 +36,7 @@ class Authenticator:
         with open("auth.txt") as f:
             self.login = f.readline().strip()
             self.password = f.readline().strip()
-            self.last_success_login_at = f.readline()
+            self.last_success_login_at = datetime.fromisoformat(f.readline().strip())
             self.errors_count = int(f.readline().strip())
 
     def authorize(self, login, password):
@@ -48,7 +49,7 @@ class Authenticator:
             self._update_auth_file()
             raise AuthorisationError("Неверный логин или пароль")
 
-        self.last_success_login_at = datetime.utcnow().isoformat()
+        self.last_success_login_at = datetime.utcnow()
 
         self._update_auth_file()
 
@@ -66,8 +67,9 @@ class Authenticator:
             raise RegistrationError("Файл уже существует")
         if self.login:
             raise RegistrationError("Логин уже существует")
+
         self.login = login
         self.password = password
+        self.last_success_login_at = datetime.utcnow()
 
         self._update_auth_file()
-
