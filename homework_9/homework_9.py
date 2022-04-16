@@ -32,13 +32,15 @@ def while_true(func):
     return wrapper
 
 
+authenticator = Authenticator()
+
+
 @while_true
 def main() -> bool:
     """ Проверяем существование логина у пользователя:
      если есть - авторизовываем,
      иначе регисртируем
     """
-    authenticator = Authenticator()
 
     if authenticator.login is None:
         print("Вы проходите регистрацию")
@@ -71,6 +73,7 @@ def main() -> bool:
 
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
+    breakpoint()
 
     return True
 

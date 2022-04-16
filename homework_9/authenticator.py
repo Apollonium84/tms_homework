@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from os.path import exists
 
@@ -27,17 +28,20 @@ class Authenticator:
     @staticmethod
     def _is_auth_file_exists() -> bool:
         """Проверка существования файла в директории"""
-        file_exists = exists("auth.txt")
+        file_exists = exists("auth.json")
         return file_exists
 
     def _read_auth_file(self):
         """Прочтение файла """
 
-        with open("auth.txt") as f:
-            self.login = f.readline().strip()
-            self.password = f.readline().strip()
-            self.last_success_login_at = datetime.fromisoformat(f.readline().strip())
-            self.errors_count = int(f.readline().strip())
+        with open("auth.json") as f:
+            file_data = f.readline()
+        print(type(json.loads(file_data)))
+        data = json.loads(file_data)
+        self.login = data["login"]
+        self.password = data["password"]
+        self.last_success_login_at = data["last success login at"].fromisoformat()
+        self.errors_count = data["errors count"]
 
     def authorize(self, login, password):
         """Авторизация пользователя"""
@@ -55,11 +59,12 @@ class Authenticator:
 
     def _update_auth_file(self):
         """Обновление файла"""
-        with open("auth.txt", "w") as f:
-            f.write(f"{self.login}\n")
-            f.write(f"{self.password}\n")
-            f.write(f"{self.last_success_login_at}\n")
-            f.write(str(f"{self.errors_count}"))
+
+        data = {"login": self.login, "password": self.password,
+                "last success login at": self.last_success_login_at.isoformat(), "errors count": self.errors_count}
+        parsed_data = json.dumps(data)
+        with open("auth.json", "w") as f:
+            f.write(parsed_data)
 
     def registrate(self, login: str, password: str):
         """Регистрация пользователя"""
