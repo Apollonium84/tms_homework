@@ -73,8 +73,7 @@ def main() -> bool:
 
     # Заставляем пользователя угадывать случайное число
     guess_number_game(1, 5)
-    breakpoint()
-
+  
     return True
 
 
